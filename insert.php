@@ -26,6 +26,11 @@ if ($password == '')
 	$error_password[] = 'Укажите пароль';
 }
 
+if (strlen($password) < 6)
+{
+	$error_password[] = 'Пароль слишком короткий. Введите не менее 6 символов';
+}
+
 if ($password_confirmation == '')
 {
 	$error_password_confirmation[] = 'Укажите пароль';
