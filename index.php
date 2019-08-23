@@ -5,6 +5,23 @@ if ($_SESSION['addedComment'] == 'true')
     $addedComment = $_SESSION['addedComment'];
     $_SESSION['addedComment'] = 'false';
 }
+
+if ($_SESSION['emptyLogin'] == 'true')
+{
+    $emptyLogin = $_SESSION['emptyLogin'];
+    $_SESSION['emptyLogin'] = 'false';
+    $newComment = $_SESSION['comment'];
+    $_SESSION['comment'] = '';
+}
+
+if ($_SESSION['emptyComment'] == 'true')
+{
+    $emptyComment = $_SESSION['emptyComment'];
+    $_SESSION['emptyComment'] = 'false';
+    $login = $_SESSION['login'];
+    $_SESSION['login'] = '';
+}
+
 function getAllowedComments()
 {
     $pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
@@ -16,7 +33,7 @@ $comments = getAllowedComments();
 function getDateComment($dateComment)
 {
     $date = strtotime($dateComment);
-    $date = date("d-m-Y", $date);
+    $date = date("d/m/Y", $date);
     return $date;
 }
 ?>
@@ -106,12 +123,22 @@ function getDateComment($dateComment)
                                 <form action="addComment.php" method="post">
                                     <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Имя</label>
-                                        <input name="login" class="form-control" id="exampleFormControlTextarea1" />
+                                        <input name="login" class="form-control" id="exampleFormControlTextarea1" value="<?php echo $login;?>" />
                                     </div>
+
+                                    <div class="alert alert-success<?php if ($emptyLogin != 'true') echo ' d-none';?>" role="alert">
+                                        Укажите ваше имя
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Сообщение</label>
-                                        <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"><?php echo $newComment;?></textarea>
                                     </div>
+
+                                    <div class="alert alert-success<?php if ($emptyComment != 'true') echo ' d-none';?>" role="alert">
+                                        Введите комментарий
+                                    </div>
+
                                     <button type="submit" class="btn btn-success">Отправить</button>
                                 </form>
 
