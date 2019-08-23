@@ -36,11 +36,22 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
 $hash = $users[0][password];
 if((password_verify($password, $hash)))
 {
+	$_SESSION['auth'] = 'true';
 	$_SESSION['login'] = $users[0][login];
 	$_SESSION['role'] = $users[0][role];
 	$_SESSION['email'] = $users[0][email];
 	$_SESSION['user_id'] = $users[0][id];
 	$_SESSION['user_password'] = $users[0][password];
+	if ($_POST['remember'] == 'on')
+	{
+		setcookie('email', $_SESSION['email'], time() + 31536000);
+		setcookie('user_password', $_SESSION['user_password'], time() + 31536000);
+	}
+	else
+	{
+		setcookie('email', $_SESSION['email'], time() - 31536000);
+		setcookie('user_password', $_SESSION['user_password'], time() - 31536000);
+	}
 	header('Location: index.php');
 	exit;
 }

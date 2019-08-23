@@ -1,5 +1,17 @@
 <?php
 session_start();
+if ($_SESSION['auth'] != 'true')
+{
+    if (isset($_COOKIE['email']) && isset($_COOKIE['user_password']))
+    {
+        $_SESSION['email'] = $_COOKIE['email'];
+        $_SESSION['user_password'] = $_COOKIE['user_password'];
+        $_SESSION['path'] = substr($_SERVER['REQUEST_URI'], 1);
+        header('Location: auto-inside.php');
+        exit;
+    }
+}
+
 if ($_SESSION['addedComment'] == 'true')
 {
     $addedComment = $_SESSION['addedComment'];
@@ -73,10 +85,10 @@ function getDateComment($dateComment)
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
-                            <a class="nav-link" href="login.html">Login</a>
+                            <a class="nav-link" href="login.php">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="register.html">Register</a>
+                            <a class="nav-link" href="register.php">Register</a>
                         </li>
                     </ul>
                 </div>
