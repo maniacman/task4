@@ -8,7 +8,7 @@ if ($_SESSION['addedComment'] == 'true')
 function getAllowedComments()
 {
     $pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
-    $comments = $pdo->query("SELECT * FROM `comments` WHERE `access` = 'allowed'")->fetchAll(PDO::FETCH_ASSOC);
+    $comments = $pdo->query("SELECT * FROM `comments` WHERE `access` = 'allowed' ORDER BY `id` DESC")->fetchAll(PDO::FETCH_ASSOC);
     return $comments;
 }
 $comments = getAllowedComments();
