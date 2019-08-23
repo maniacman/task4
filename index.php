@@ -1,4 +1,10 @@
 <?php
+session_start();
+if ($_SESSION['addedComment'] == 'true')
+{
+    $addedComment = $_SESSION['addedComment'];
+    $_SESSION['addedComment'] = 'false';
+}
 function getAllowedComments()
 {
     $pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
@@ -62,7 +68,7 @@ $comments = getAllowedComments();
                             </div>
 
                             <div class="card-body">
-                                <div class="alert alert-success" role="alert">
+                                <div class="alert alert-success <?php if ($addedComment != 'true') echo 'd-none';?>" role="alert">
                                     Комментарий успешно добавлен
                                 </div>
 
