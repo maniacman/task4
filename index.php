@@ -89,17 +89,20 @@ $comments = getAllowedComments();
                             </div>
 
                             <div class="card-body">
-                                <form action="/store" method="post">
+
+                                <form action="addComment.php" method="post">
                                     <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Имя</label>
-                                        <input name="name" class="form-control" id="exampleFormControlTextarea1" />
+                                        <input name="login" class="form-control" id="exampleFormControlTextarea1" />
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Сообщение</label>
-                                        <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-success">Отправить</button>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
