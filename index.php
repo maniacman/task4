@@ -12,6 +12,13 @@ function getAllowedComments()
     return $comments;
 }
 $comments = getAllowedComments();
+
+function getDateComment($dateComment)
+{
+    $date = strtotime($dateComment);
+    $date = date("d-m-Y", $date);
+    return $date;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +84,7 @@ $comments = getAllowedComments();
                                         <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
                                         <div class="media-body">
                                             <h5 class="mt-0"><?php echo $comment[login];?></h5> 
-                                            <span><small><?php echo date("d-m-Y", $comment[date_comment]);?></small></span>
+                                            <span><small><?php echo getDateComment($comment[date_comment]);?></small></span>
                                             <p>
                                                 <?php echo $comment[comment];?>
                                             </p>
