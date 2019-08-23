@@ -1,3 +1,30 @@
+<?php
+session_start();
+if ($_SESSION['error_registration'] = 'true')
+{
+    if (count($_SESSION['error_login']) >0)
+    {
+        $error_login = $_SESSION['error_login'][0];
+        $_SESSION['error_login'] = [];
+    }
+    if (count($_SESSION['error_email']) >0)
+    {
+        $error_email = $_SESSION['error_email'][0];
+        $_SESSION['error_email'] = [];
+    }
+    if (count($_SESSION['error_password']) >0)
+    {
+        $error_password = $_SESSION['error_password'][0];
+        $_SESSION['error_password'] = [];
+    }
+    if (count($_SESSION['error_password_confirmation']) >0)
+    {
+        $error_password_confirmation = $_SESSION['error_password_confirmation'][0];
+        $_SESSION['error_password_confirmation'] = [];
+    }
+    $_SESSION['error_registration'] = 'false';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,10 +85,10 @@
                                         <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="login" autofocus>
+                                            <input id="name" type="text" class="form-control<?php if ($error_login) echo ' @error(\'name\') is-invalid @enderror';?>" name="login" autofocus>
 
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>Ошибка валидации</strong>
+                                                <strong><?php echo $error_login;?></strong>
                                             </span>
 
                                         </div>
@@ -71,9 +98,9 @@
                                         <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" >
+                                            <input id="email" type="email" class="form-control<?php if ($error_email) echo ' @error(\'email\') is-invalid @enderror';?>" name="email" >
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>Ошибка валидации</strong>
+                                                <strong><?php echo $error_email;?></strong>
                                             </span>
                                         </div>
                                     </div>
@@ -82,9 +109,9 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="new-password">
+                                            <input id="password" type="password" class="form-control<?php if ($error_password) echo ' @error(\'password\') is-invalid @enderror';?>" name="password"  autocomplete="new-password">
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>Ошибка валидации</strong>
+                                                <strong><?php echo $error_password;?></strong>
                                             </span>
                                         </div>
                                     </div>
@@ -93,9 +120,9 @@
                                         <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
 
                                         <div class="col-md-6">
-                                            <input id="password-confirm" type="password" class="form-control @error('password-confirm') is-invalid @enderror" name="password_confirmation"  autocomplete="new-password">
+                                            <input id="password-confirm" type="password" class="form-control<?php if ($error_password_confirmation) echo ' @error(\'password_confirm\') is-invalid @enderror';?>" name="password_confirmation"  autocomplete="new-password">
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>Ошибка валидации</strong>
+                                                <strong><?php echo $error_password_confirmation;?></strong>
                                             </span>
                                         </div>
                                     </div>
