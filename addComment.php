@@ -1,5 +1,4 @@
 <?php
-session_start();
 $login = htmlspecialchars(trim($_POST['login']));
 $comment = htmlspecialchars($_POST['comment']);
 if ($comment == '')
