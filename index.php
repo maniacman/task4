@@ -66,14 +66,14 @@ $comments = getAllowedComments();
                                     Комментарий успешно добавлен
                                 </div>
 
-                                <?php foreach ($comments as $key => $value): ?>
+                                <?php foreach ($comments as $key => $comment): ?>
                                     <div class="media">
                                         <img src="img/no-user.jpg" class="mr-3" alt="..." width="64" height="64">
                                         <div class="media-body">
-                                            <h5 class="mt-0"><?php echo $value[login];?></h5> 
-                                            <span><small><?php echo date("d-m-Y", $value[date_comment]);?></small></span>
+                                            <h5 class="mt-0"><?php echo $comment[login];?></h5> 
+                                            <span><small><?php echo date("d-m-Y", $comment[date_comment]);?></small></span>
                                             <p>
-                                                <?php echo $value[comment];?>
+                                                <?php echo $comment[comment];?>
                                             </p>
                                         </div>
                                     </div>
