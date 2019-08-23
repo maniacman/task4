@@ -41,6 +41,16 @@ if ($password != $password_confirmation)
 	$error_password_confirmation[] = 'Пароли не совпадают';
 }
 
+$pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
+$statement = $pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
+$val = ['email' => $email];
+$statement->execute($val);
+$users = $statement->fetchAll(PDO::FETCH_ASSOC);
+if(count($users) > 0)
+{
+	$error_email[] = 'Эта почта уже используется. Авторизуйтесь или введите другую.';
+}
+
 if (count($error_login) >0 || count($error_email) >0 || count($error_password) >0 || count($error_password_confirmation) >0)
 {
 	$_SESSION['error_login'] = $error_login;
