@@ -18,26 +18,28 @@ if ($_SESSION['addedComment'] == 'true')
     $_SESSION['addedComment'] = 'false';
 }
 
-if ($_SESSION['emptyLogin'] == 'true')
-{
-    $emptyLogin = $_SESSION['emptyLogin'];
-    $_SESSION['emptyLogin'] = 'false';
-    $newComment = $_SESSION['comment'];
-    $_SESSION['comment'] = '';
-}
-
 if ($_SESSION['emptyComment'] == 'true')
 {
     $emptyComment = $_SESSION['emptyComment'];
     $_SESSION['emptyComment'] = 'false';
-    $login = $_SESSION['login'];
-    $_SESSION['login'] = '';
+}
+
+if ($_SESSION['do_auth'] == 'true')
+{
+    $do_auth = $_SESSION['do_auth'];
+    $_SESSION['do_auth'] = 'false';
 }
 
 function getAllowedComments()
 {
     $pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
-    $comments = $pdo->query("SELECT * FROM `comments` WHERE `access` = 'allowed' ORDER BY `id` DESC")->fetchAll(PDO::FETCH_ASSOC);
+    $comments = $pdo->query("
+        SELECT users.login, comments.date_comment, comments.comment 
+        FROM comments 
+        INNER JOIN users ON comments.user_id = users.id 
+        WHERE comments.access = 'allowed' 
+        ORDER BY comments.date_comment DESC
+        ")->fetchAll(PDO::FETCH_ASSOC);
     return $comments;
 }
 $comments = getAllowedComments();
@@ -122,7 +124,7 @@ function getDateComment($dateComment)
                             </div>
 
                             <div class="card-body">
-                                <div class="alert alert-success <?php if ($addedComment != 'true') echo 'd-none';?>" role="alert">
+                                <div class="alert alert-success<?php if ($addedComment != 'true') echo ' d-none';?>" role="alert">
                                     Комментарий успешно добавлен
                                 </div>
 
@@ -143,6 +145,17 @@ function getDateComment($dateComment)
                         </div>
                     </div>
 
+
+
+                    <div class="card-body">
+                        <div class="alert alert-primary<?php if ($do_auth != 'true') echo ' d-none';?>" role="alert">
+                            Чтобы оставить комментарий, <a href="login.php">авторизуйтесь</a> или <a href="register.php">зарегистрируйтесь</a>
+                        </div>
+                    </div>
+
+                    
+
+
                     <div class="col-md-12" style="margin-top: 20px;">
                         <div class="card">
                             <div class="card-header"><h3>Оставить комментарий</h3>
@@ -150,16 +163,7 @@ function getDateComment($dateComment)
 
                             <div class="card-body">
 
-                                <form action="addComment.php" method="post">
-                                    <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Имя</label>
-                                        <input name="login" class="form-control" id="exampleFormControlTextarea1" value="<?php echo $login;?>" />
-                                    </div>
-
-                                    <div class="alert alert-success<?php if ($emptyLogin != 'true') echo ' d-none';?>" role="alert">
-                                        Укажите ваше имя
-                                    </div>
-
+                                <form action="addComment.php" method="post">                                    
                                     <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Сообщение</label>
                                         <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"><?php echo $newComment;?></textarea>
