@@ -7,7 +7,7 @@ if ($_SESSION['auth'] != 'true')
         $_SESSION['email'] = $_COOKIE['email'];
         $_SESSION['user_password'] = $_COOKIE['user_password'];
         $_SESSION['path'] = substr($_SERVER['REQUEST_URI'], 1);
-        header('Location: auto-inside.php');
+        header('Location: autoInside.php');
         exit;
     }
 }

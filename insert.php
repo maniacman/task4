@@ -1,11 +1,13 @@
 <?php
 session_start();
 
+//из массива POST получаю логин, email, и два пароля, слегка подготавливаю их к работе
 $login = htmlspecialchars(trim($_POST['login']));
 $email = htmlspecialchars(trim($_POST['email']));
 $password = htmlspecialchars(trim($_POST['password']));
 $password_confirmation = htmlspecialchars(trim($_POST['password_confirmation']));
 
+//проверяю логин, email и пароли на соответствие заданным условиям
 if ($login == '')
 {
 	$error_login[] = 'Укажите имя';
@@ -42,6 +44,18 @@ if ($password != $password_confirmation)
 }
 
 $pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
+
+//проверяю логин на уникальность
+$statement = $pdo->prepare("SELECT * FROM `users` WHERE `login` = :login");
+$values = ['login' => $login];
+$statement->execute($values);
+$users = $statement->fetchAll(PDO::FETCH_ASSOC);
+if(count($users) > 0)
+{
+	$error_login[] = 'Этот логин уже используется. Придумайте другой.';
+}
+
+//проверяю email на уникалность
 $statement = $pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
 $val = ['email' => $email];
 $statement->execute($val);
@@ -51,6 +65,7 @@ if(count($users) > 0)
 	$error_email[] = 'Эта почта уже используется. Авторизуйтесь или введите другую.';
 }
 
+//если есть хоть одна ошибка, то сохраняю в сессию данные об ошибках и возвращаю пользователя обратно на форму регистрации, там он получит уведомления о допущенных ошибках
 if (count($error_login) >0 || count($error_email) >0 || count($error_password) >0 || count($error_password_confirmation) >0)
 {
 	$_SESSION['error_login'] = $error_login;
@@ -61,10 +76,9 @@ if (count($error_login) >0 || count($error_email) >0 || count($error_password) >
 	header('Location: register.php');
 	exit;
 }
-
+//если ошибок не обраружено, то хэширую пароль и сохраняю данные о пользователе в БД, а пользователя отправляю на страницу авторизации
 $password = password_hash($password, PASSWORD_DEFAULT);
 
-$pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
 $statement = $pdo->prepare("INSERT INTO `users` (role, login, email, password, filename) VALUES(:role, :login, :email, :password, :filename)");
 $values = ['role' => 'user', 'login' => $login, 'email' => $email, 'password' => $password, 'filename' => 'user.jpg'];
 $statement->execute($values);
