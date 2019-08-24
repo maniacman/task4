@@ -35,7 +35,7 @@ if (count($error_login) >0 || count($error_email) >0)
 //подключаюсь к БД
 $pdo = new PDO('mysql:host=localhost;dbname=blog;charset=utf8;', 'root', '');
 
-//если в массиве пост пришел логин, отличный от сохраненного в сессии, то проверяю его на уникальность
+//если в массиве POST пришел логин, отличный от сохраненного в сессии, то проверяю его на уникальность
 if ($login != $_SESSION['login'])
 {
 	$statement = $pdo->prepare("SELECT * FROM `users` WHERE `login` = :login");
@@ -48,7 +48,7 @@ if ($login != $_SESSION['login'])
 	}
 }
 
-//если в массиве пост пришел email, отличный от сохраненного в сессии, то проверяю его на уникальность
+//если в массиве POST пришел email, отличный от сохраненного в сессии, то проверяю его на уникальность
 if ($email != $_SESSION['email'])
 {
 	$statement = $pdo->prepare("SELECT * FROM `users` WHERE `email` = :email");
@@ -84,7 +84,7 @@ if ($_FILES['image']['name'])
 		unlink($path);
 	}
 }
-else
+else//если новое фото не загружено, то используем старое фото
 {
 	$name = $_SESSION['user_photo'];
 }
@@ -115,6 +115,7 @@ class DFileHelper
 	}
 }
 
+//обновляю данные пользователя в БД, и если установленны куки, то и их тоже обновляю.
 $statement = $pdo->prepare("UPDATE `users` SET `login` = :newLogin, `email` = :email, `filename` = :filename WHERE `login` = :login");
 $values = ['newLogin' => $login, 'email' => $email, 'filename' => $name, 'login' => $_SESSION['login']];
 $statement->execute($values);

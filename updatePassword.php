@@ -46,7 +46,7 @@ $values = ['email' => $_SESSION['email']];
 $statement->execute($values);
 $users = $statement->fetchAll(PDO::FETCH_ASSOC);
 $hash = $users[0][password];
-if((password_verify($password, $hash)))
+if((password_verify($password, $hash)))//если пароль верный, то обновляю данные пользователя в БД, и если установлены куки, их тоже обновляю.
 {
 	$new_password = password_hash($new_password, PASSWORD_DEFAULT);
 	$statement = $pdo->prepare("UPDATE `users` SET `password` = :password WHERE `email` = :email");
